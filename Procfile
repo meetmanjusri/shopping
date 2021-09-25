@@ -1,1 +1,1 @@
-web: gunicorn maplegrocery.wsgi --log-file -
+web: gunicorn shopping.wsgi --log-file -
