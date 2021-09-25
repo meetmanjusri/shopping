@@ -1,1 +1,1 @@
-web: gunicorn clientms.wsgi --log-file -
+web: gunicorn maplegrocery.wsgi --log-file -
