@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
@@ -60,11 +61,17 @@ class Product(models.Model):
         return f'{self.name}'
 
 
-class Receipt(models.Model):
+class Order(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField()
+    address = models.CharField(max_length=250)
+    postal_code = models.CharField(max_length=20)
+    city = models.CharField(max_length=100)
     payment_card = models.CharField(max_length=16)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2)
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(auto_now_add=True)
+    paid = models.BooleanField(default=False)
 
     def created(self):
         self.created_date = timezone.now()
@@ -77,14 +84,18 @@ class Receipt(models.Model):
     def __str__(self):
         return f'{self.id}'
 
+    def get_total_cost(self):
+        return sum(item.get_cost() for item in self.items.all())
 
-class Item(models.Model):
-    item_receipt = models.ForeignKey(Receipt, on_delete=models.CASCADE)
-    item_product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    item_product_price = models.DecimalField(max_digits=10, decimal_places=2)
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.DecimalField(max_digits=10, decimal_places=2)
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(auto_now_add=True)
-
+    
     def created(self):
         self.created_date = timezone.now()
         self.save()
@@ -92,6 +103,9 @@ class Item(models.Model):
     def updated(self):
         self.updated_date = timezone.now()
         self.save()
-
+        
     def __str__(self):
-        return f'{self.id}'
+        return str(self.id)
+
+    def get_cost(self):
+        return self.price * self.quantity

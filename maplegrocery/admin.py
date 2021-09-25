@@ -20,18 +20,20 @@ class ProductAdmin(admin.ModelAdmin):
                    'created_date', 'updated_date']
 
 
-class ReceiptAdmin(admin.ModelAdmin):
-    list_display = ['payment_card', 'total_price', 'created_date', 'updated_date']
-    list_filter = ['payment_card', 'total_price', 'created_date', 'updated_date']
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['first_name', 'last_name', 'email', 'address', 'postal_code', 'city', 'payment_card',
+                    'created_date', 'updated_date', 'paid']
+    list_filter = ['first_name', 'last_name', 'email', 'address', 'postal_code', 'city', 'payment_card',
+                   'created_date', 'updated_date', 'paid']
 
 
-class ItemAdmin(admin.ModelAdmin):
-    list_display = ['item_receipt', 'item_product', 'item_product_price', 'created_date', 'updated_date']
-    list_filter = ['item_receipt', 'item_product', 'item_product_price', 'created_date', 'updated_date']
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ['order', 'product', 'price', 'quantity', 'created_date', 'updated_date']
+    list_filter = ['order', 'product', 'price', 'quantity', 'created_date', 'updated_date']
 
 
 admin.site.register(Unit, UnitAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
-admin.site.register(Receipt, ReceiptAdmin)
-admin.site.register(Item, ItemAdmin)
+admin.site.register(Order, OrderAdmin)
+admin.site.register(OrderItem, OrderItemAdmin)
