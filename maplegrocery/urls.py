@@ -5,10 +5,14 @@ from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 app_name = 'maplegrocery'
+
 urlpatterns = [
     path('', views.home, name='home'),
     re_path(r'^home/$', views.home, name='home'),
     path('unit_list', views.unit_list, name='unit_list'),
+    path('unit/create/', views.unit_new, name='unit_new'),
+    path('unit/<int:pk>/edit/', views.unit_edit, name='unit_edit'),
+    path('unit/<int:pk>/delete/', views.unit_delete, name='unit_delete'),
     path('product_list', views.product_list, name='product_list'),
     path('category_list', views.category_list, name='category_list'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

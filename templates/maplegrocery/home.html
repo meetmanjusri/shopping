@@ -1,0 +1,15 @@
+{% extends "maplegrocery/base.html" %}
+{% load static %}
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+
+{% block content %}
+    <body id="background"></body>
+    <div class="page-container">
+        <h2 class="top-menu">Welcome To Maple Grocery</h2>
+    </div>
+    <div class="content container">
+
+    </div>
+{% endblock %}
