@@ -49,7 +49,7 @@ def unit_edit(request, pk):
     else:
         # edit
         form = UnitForm(instance=unit)
-    return render(request, 'portfolio/unit_edit.html', {'form': form})
+    return render(request, 'maplegrocery/unit_edit.html', {'form': form})
 
 
 @login_required
