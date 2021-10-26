@@ -14,6 +14,7 @@
                     <th>Description</th>
                     <th>Created Date</th>
                     <th>Updated Date</th>
+                    <th colspan="3">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -21,8 +22,8 @@
                         <tr class="text-white bg-dark">
                             <td>{{ unit.name }}</td>
                             <td>{{ unit.description}}</td>
-                            <td>{{ unit.createdDate }}</td>
-                            <td>{{ unit.updatedDate }}</td>
+                            <td>{{ unit.created_date }}</td>
+                            <td>{{ unit.updated_date }}</td>
                             <td><a href="{% url 'maplegrocery:unit_edit' pk=unit.pk %}"
                                    class="btn btn-warning">Edit</a></td>
                             <td><a href="{% url 'maplegrocery:unit_delete' pk=unit.pk %}"

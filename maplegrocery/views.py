@@ -65,7 +65,83 @@ def product_list(request):
                   {'products': product})
 
 
+@login_required
+def product_new(request):
+    if request.method == "POST":
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.created_date = timezone.now()
+            product.save()
+            return redirect('maplegrocery:product_list')
+    else:
+        form = ProductForm()
+        # print("Else")
+    return render(request, 'maplegrocery/product_new.html', {'form': form})
+
+
+@login_required
+def product_edit(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == "POST":
+        # update
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.updated_date = timezone.now()
+            product.save()
+            return redirect('maplegrocery:product_list')
+    else:
+        # edit
+        form = ProductForm(instance=product)
+    return render(request, 'maplegrocery/product_edit.html', {'form': form})
+
+@login_required
+def product_delete(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    product.delete()
+    return redirect('maplegrocery:product_list')
+
+
 def category_list(request):
     category = Category.objects.filter(created_date__lte=timezone.now())
     return render(request, 'maplegrocery/category_list.html',
                   {'categorys': category})
+
+
+@login_required
+def category_new(request):
+    if request.method == "POST":
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            category = form.save(commit=False)
+            category.created_date = timezone.now()
+            category.save()
+            return redirect('maplegrocery:category_list')
+    else:
+        form = CategoryForm()
+    return render(request, 'maplegrocery/category_new.html', {'form': form})
+
+
+@login_required
+def category_edit(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+    if request.method == "POST":
+        # update
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            category = form.save(commit=False)
+            category.updated_date = timezone.now()
+            category.save()
+            return redirect('maplegrocery:category_list')
+    else:
+        # edit
+        form = CategoryForm(instance=category)
+    return render(request, 'maplegrocery/category_edit.html', {'form': form})
+
+
+@login_required
+def category_delete(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+    category.delete()
+    return redirect('maplegrocery:category_list')
