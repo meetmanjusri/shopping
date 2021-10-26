@@ -20,13 +20,13 @@ class ProductForm(forms.ModelForm):
         fields = ('name', 'description', 'image', 'price', 'available', 'product_unit', 'product_category')
 
 
-class Order(forms.ModelForm):
+class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ('first_name', 'last_name', 'email', 'address', 'postal_code', 'city', 'payment_card', 'paid')
 
 
-class OrderItem(forms.ModelForm):
+class OrderItemForm(forms.ModelForm):
     class Meta:
         model = OrderItem
-        fields = ('price', 'quantity')
+        fields = ('order','product','price','quantity','created_date')

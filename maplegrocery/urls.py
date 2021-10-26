@@ -21,6 +21,14 @@ urlpatterns = [
     path('category/create/', views.category_new, name='category_new'),
     path('category/<int:pk>/edit/', views.category_edit, name='category_edit'),
     path('category/<int:pk>/delete/', views.category_delete, name='category_delete'),
+    path('order_list', views.order_list, name='order_list'),
+    path('order/create/', views.order_new, name='order_new'),
+    path('order/<int:pk>/edit/', views.order_edit, name='order_edit'),
+    path('order/<int:pk>/delete/', views.order_delete, name='order_delete'),
+    path('orderitem_list', views.orderitem_list, name='orderitem_list'),
+    path('orderitem/create/', views.orderitem_new, name='orderitem_new'),
+    path('orderitem/<int:pk>/edit/', views.orderitem_edit, name='orderitem_edit'),
+    path('orderitem/<int:pk>/delete/', views.orderitem_delete, name='orderitem_delete'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

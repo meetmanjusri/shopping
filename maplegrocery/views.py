@@ -145,3 +145,91 @@ def category_delete(request, pk):
     category = get_object_or_404(Category, pk=pk)
     category.delete()
     return redirect('maplegrocery:category_list')
+
+def order_list(request):
+    order = Order.objects.filter(created_date__lte=timezone.now())
+    return render(request, 'maplegrocery/order_list.html',
+                  {'orders': order})
+
+
+@login_required
+def order_new(request):
+    if request.method == "POST":
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.created_date = timezone.now()
+            order.save()
+            return redirect('maplegrocery:order_list')
+    else:
+        form = OrderForm()
+    return render(request, 'maplegrocery/order_new.html', {'form': form})
+
+
+@login_required
+def order_edit(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    if request.method == "POST":
+        # update
+        form = OrderForm(request.POST, instance=order)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.updated_date = timezone.now()
+            order.save()
+            return redirect('maplegrocery:order_list')
+    else:
+        # edit
+        form = OrderForm(instance=order)
+    return render(request, 'maplegrocery/order_edit.html', {'form': form})
+
+
+@login_required
+def order_delete(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    order.delete()
+    return redirect('maplegrocery:order_list')
+
+
+@login_required
+def orderitem_list(request):
+    orderitem = OrderItem.objects.filter(created_date__lte=timezone.now())
+    return render(request, 'maplegrocery/orderitem_list.html',
+                  {'orderitems': orderitem})
+
+
+@login_required
+def orderitem_new(request):
+    if request.method == "POST":
+        form = OrderItemForm(request.POST)
+        if form.is_valid():
+            orderitem = form.save(commit=False)
+            orderitem.created_date = timezone.now()
+            orderitem.save()
+            return redirect('maplegrocery:orderitem_list')
+    else:
+        form = OrderItemForm()
+    return render(request, 'maplegrocery/orderitem_new.html', {'form': form})
+
+
+@login_required
+def orderitem_edit(request, pk):
+    orderitem = get_object_or_404(OrderItem, pk=pk)
+    if request.method == "POST":
+        # update
+        form = OrderItemForm(request.POST, instance=orderitem)
+        if form.is_valid():
+            orderitem = form.save(commit=False)
+            orderitem.updated_date = timezone.now()
+            orderitem.save()
+            return redirect('maplegrocery:orderitem_list')
+    else:
+        # edit
+        form = OrderItemForm(instance=orderitem)
+    return render(request, 'maplegrocery/orderitem_edit.html', {'form': form})
+
+
+@login_required
+def orderitem_delete(request, pk):
+    orderitem = get_object_or_404(OrderItem, pk=pk)
+    orderitem.delete()
+    return redirect('maplegrocery:orderitem_list')

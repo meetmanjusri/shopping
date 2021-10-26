@@ -2,8 +2,8 @@
 <html lang="en">
 {% extends 'maplegrocery/base.html' %}
 {% block content %}
-    <h1>Add a new unit</h1>
-    <form method="POST" class="unit-form" enctype='multipart/form-data'>{% csrf_token %}
+    <h1>Add a new order</h1>
+    <form method="POST" class="order-form">{% csrf_token %}
           {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
