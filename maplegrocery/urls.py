@@ -7,8 +7,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 app_name = 'maplegrocery'
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    re_path(r'^home/$', views.home, name='home'),
+    path('', views.product_list, name='product_list'),
+    # re_path(r'^home/$', views.home, name='home'),
     path('unit_list', views.unit_list, name='unit_list'),
     path('unit/create/', views.unit_new, name='unit_new'),
     path('unit/<int:pk>/edit/', views.unit_edit, name='unit_edit'),

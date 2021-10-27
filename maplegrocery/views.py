@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
+from cart.forms import CartAddProductForm
 from .models import *
 from .forms import *
 
@@ -61,8 +62,10 @@ def unit_delete(request, pk):
 
 def product_list(request):
     product = Product.objects.filter(created_date__lte=timezone.now())
+    cart_product_form = CartAddProductForm()
     return render(request, 'maplegrocery/product_list.html',
-                  {'products': product})
+                  {'products': product,
+                   'cart_product_form': cart_product_form})
 
 
 @login_required
