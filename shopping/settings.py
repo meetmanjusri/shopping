@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 import django_heroku
+import braintree
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'maplegrocery',
     'cart',
+    'payment',
     'crispy_forms',
     'storages',
 ]
@@ -122,6 +124,18 @@ TIME_ZONE = 'America/Chicago'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
+# Braintree settings
+BRAINTREE_MERCHANT_ID = 'dhm5gzccp94j5tsz' # Merchant ID
+BRAINTREE_PUBLIC_KEY = '689d8f6p5q2c8zpd' # Public Key
+BRAINTREE_PRIVATE_KEY = '00d95622ebf2501b2d76dc7a96c69702' # Private key
+
+BRAINTREE_CONF = braintree.Configuration(
+    braintree.Environment.Sandbox,
+    BRAINTREE_MERCHANT_ID,
+    BRAINTREE_PUBLIC_KEY,
+    BRAINTREE_PRIVATE_KEY
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

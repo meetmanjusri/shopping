@@ -23,7 +23,7 @@ class ProductForm(forms.ModelForm):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ('first_name', 'last_name', 'email', 'address', 'postal_code', 'city', 'payment_card', 'paid')
+        fields = ('first_name', 'last_name', 'email', 'address', 'postal_code', 'city', 'braintree_id', 'paid')
 
 
 class OrderItemForm(forms.ModelForm):
