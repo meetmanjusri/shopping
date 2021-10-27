@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from cart.forms import CartAddProductForm
+from cart.cart import Cart
 from .models import *
 from .forms import *
 
@@ -156,18 +157,30 @@ def order_list(request):
 
 
 @login_required
-def order_new(request):
-    if request.method == "POST":
+def order_create(request):
+    # if request.method == "POST":
+    #     form = OrderForm(request.POST)
+    #     if form.is_valid():
+    #         order = form.save(commit=False)
+    #         order.created_date = timezone.now()
+    #         order.save()
+    #         return redirect('maplegrocery:order_list')
+    # else:
+    #     form = OrderForm()
+    # return render(request, 'maplegrocery/order_new.html', {'form': form})
+    cart = Cart(request)
+    if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
-            order = form.save(commit=False)
-            order.created_date = timezone.now()
-            order.save()
-            return redirect('maplegrocery:order_list')
+            order = form.save()
+            for item in cart:
+                OrderItem.objects.create(order=order,product=item['product'],price=item['price'],quantity=item['quantity'])
+            # clear the cart
+            cart.clear()
+            return render(request,'orders/created.html',{'order': order})
     else:
         form = OrderForm()
-    return render(request, 'maplegrocery/order_new.html', {'form': form})
-
+    return render(request,'orders/create.html',{'cart': cart, 'form': form})
 
 @login_required
 def order_edit(request, pk):
@@ -191,48 +204,3 @@ def order_delete(request, pk):
     order = get_object_or_404(Order, pk=pk)
     order.delete()
     return redirect('maplegrocery:order_list')
-
-
-@login_required
-def orderitem_list(request):
-    orderitem = OrderItem.objects.filter(created_date__lte=timezone.now())
-    return render(request, 'maplegrocery/orderitem_list.html',
-                  {'orderitems': orderitem})
-
-
-@login_required
-def orderitem_new(request):
-    if request.method == "POST":
-        form = OrderItemForm(request.POST)
-        if form.is_valid():
-            orderitem = form.save(commit=False)
-            orderitem.created_date = timezone.now()
-            orderitem.save()
-            return redirect('maplegrocery:orderitem_list')
-    else:
-        form = OrderItemForm()
-    return render(request, 'maplegrocery/orderitem_new.html', {'form': form})
-
-
-@login_required
-def orderitem_edit(request, pk):
-    orderitem = get_object_or_404(OrderItem, pk=pk)
-    if request.method == "POST":
-        # update
-        form = OrderItemForm(request.POST, instance=orderitem)
-        if form.is_valid():
-            orderitem = form.save(commit=False)
-            orderitem.updated_date = timezone.now()
-            orderitem.save()
-            return redirect('maplegrocery:orderitem_list')
-    else:
-        # edit
-        form = OrderItemForm(instance=orderitem)
-    return render(request, 'maplegrocery/orderitem_edit.html', {'form': form})
-
-
-@login_required
-def orderitem_delete(request, pk):
-    orderitem = get_object_or_404(OrderItem, pk=pk)
-    orderitem.delete()
-    return redirect('maplegrocery:orderitem_list')

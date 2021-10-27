@@ -81,6 +81,9 @@ class Order(models.Model):
         self.updated_date = timezone.now()
         self.save()
 
+    class Meta:
+        ordering = ('-created_date',)
+
     def __str__(self):
         return f'{self.id}'
 
@@ -92,7 +95,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    quantity = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField(default=1)
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(auto_now_add=True)
     

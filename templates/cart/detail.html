@@ -55,6 +55,6 @@
     </table>
     <p class="text-right">
         <a href="{% url "maplegrocery:product_list" %}" class="buttonlight">Continue shopping</a>
-        <a href="#" class="button">Checkout</a>
+        <a href="{% url "maplegrocery:order_create" %}" class="button">Checkout</a>
     </p>
 {% endblock %}

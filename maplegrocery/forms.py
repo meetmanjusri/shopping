@@ -30,3 +30,4 @@ class OrderItemForm(forms.ModelForm):
     class Meta:
         model = OrderItem
         fields = ('order','product','price','quantity','created_date')
+
