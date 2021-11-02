@@ -102,6 +102,7 @@ def product_edit(request, pk):
         form = ProductForm(instance=product)
     return render(request, 'maplegrocery/product_edit.html', {'form': form})
 
+
 @login_required
 def product_delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -152,6 +153,7 @@ def category_delete(request, pk):
     category.delete()
     return redirect('maplegrocery:category_list')
 
+
 def order_list(request):
     order = Order.objects.filter(created_date__lte=timezone.now())
     return render(request, 'maplegrocery/order_list.html',
@@ -160,23 +162,14 @@ def order_list(request):
 
 @login_required
 def order_create(request):
-    # if request.method == "POST":
-    #     form = OrderForm(request.POST)
-    #     if form.is_valid():
-    #         order = form.save(commit=False)
-    #         order.created_date = timezone.now()
-    #         order.save()
-    #         return redirect('maplegrocery:order_list')
-    # else:
-    #     form = OrderForm()
-    # return render(request, 'maplegrocery/order_new.html', {'form': form})
     cart = Cart(request)
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
             order = form.save()
             for item in cart:
-                OrderItem.objects.create(order=order,product=item['product'],price=item['price'],quantity=item['quantity'])
+                OrderItem.objects.create(order=order, product=item['product'], price=item['price'],
+                                         quantity=item['quantity'])
             # clear the cart
             cart.clear()
             # launch asynchronous task
@@ -187,7 +180,8 @@ def order_create(request):
             return redirect(reverse('payment:process'))
     else:
         form = OrderForm()
-    return render(request,'orders/create.html',{'cart': cart, 'form': form})
+    return render(request, 'orders/create.html', {'cart': cart, 'form': form})
+
 
 @login_required
 def order_edit(request, pk):
