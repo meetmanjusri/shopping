@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 
 
 
@@ -37,6 +38,10 @@ class Category(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+
+    # def get_absolute_url(self):
+    #     return reverse('maplegrocery:product_list_by_category',
+    #                    args=[self.name])
 
 
 class Product(models.Model):
@@ -99,7 +104,7 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(auto_now_add=True)
-    
+
     def created(self):
         self.created_date = timezone.now()
         self.save()
@@ -107,7 +112,7 @@ class OrderItem(models.Model):
     def updated(self):
         self.updated_date = timezone.now()
         self.save()
-        
+
     def __str__(self):
         return str(self.id)
 

@@ -11,13 +11,6 @@ from .forms import *
 now = timezone.now()
 
 
-def home(request):
-    products = Product.objects.filter(created_date__lte=timezone.now())
-    category = Category.objects.filter(created_date__lte=timezone.now())
-    return render(request, 'maplegrocery/home.html',
-                  {'maplegrocery': home, 'products': products, 'categorys': category})
-
-
 def unit_list(request):
     unit = Unit.objects.filter(created_date__lte=timezone.now())
     return render(request, 'maplegrocery/unit_list.html',
@@ -66,14 +59,14 @@ def unit_delete(request, pk):
 def product_list(request, category_name=None):
     category = None
     categorys = Category.objects.all()
-    product = Product.objects.filter(created_date__lte=timezone.now())
+    products = Product.objects.filter(created_date__lte=timezone.now())
     cart_product_form = CartAddProductForm()
     if category_name:
         category = get_object_or_404(Category, name=category_name)
-        products = product.filter(category=category)
+        products = products.filter(category=category)
     return render(request, 'maplegrocery/product_list.html',
                   {'category': category,
-                   'categories': categorys,
+                   'categorys': categorys,
                    'products': products,
                    'cart_product_form': cart_product_form})
 
