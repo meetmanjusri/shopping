@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from maplegrocery.models import Order
 
+
 # instantiate Braintree payment gateway
 gateway = braintree.BraintreeGateway(settings.BRAINTREE_CONF)
 def payment_process(request):
