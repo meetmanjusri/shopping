@@ -1,5 +1,7 @@
 venv
 myvenv
+staticfiles
+media
 *.pyc 
 __pycache__ 
 local_settings.py 

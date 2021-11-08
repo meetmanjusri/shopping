@@ -47,7 +47,7 @@
 {#                        </div>#}
 {#                    <br style="margin: 1px; position: relative">#}
 {#                    {% endif %}#}
-                    {#                    <a href="{% url 'portfolio:reservation_list' pk=park.pk %}" class="btn btn-primary" style="width: 10em"></a>#}
+{#                    <a href="{% url 'portfolio:reservation_list' pk=park.pk %}" class="btn btn-primary" style="width: 10em"></a>#}
 {#                </div>#}
 {#            </div>#}
 {#        {% endfor %}#}
@@ -64,6 +64,7 @@
     {% if category %}{{ category.name }}{% else %}Products{% endif %}
 {% endblock %}
 {% block content %}
+    <link href="{% static "css/styles.css" %}" rel="stylesheet"/>
     <div id="sidebar">
         <h3>Categories</h3>
         <ul>

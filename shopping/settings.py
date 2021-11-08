@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'maplegrocery',
     'cart',
     'payment',
+    'user',
     'crispy_forms',
     'storages',
 ]
@@ -162,6 +163,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'user.CustomUser'
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
