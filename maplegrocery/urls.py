@@ -25,7 +25,7 @@ urlpatterns = [
         path('order/create/', views.order_create, name='order_create'),
         path('order/<int:pk>/edit/', views.order_edit, name='order_edit'),
         path('order/<int:pk>/delete/', views.order_delete, name='order_delete'),
-        path('admin/order/<int:order_id>/pdf/', views.admin_order_pdf, name='admin_order_pdf'),
+        path('order/<int:order_id>/pdf/', views.admin_order_pdf, name='admin_order_pdf'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
