@@ -167,15 +167,13 @@ def order_list(request):
 
 def order_created(order_id):
     order = Order.objects.get(id=order_id)
-    print(order.email)
     subject = f'Order nr. {order.id}'
     message = f'Dear {order.first_name},\n\n' \
               f'You have successfully placed an order.' \
               f'Your order ID is {order.id}.'
-    print(message)
     mail_sent = send_mail(subject,
                           message,
-                          'maplegrocery21@gmail.com',
+                          settings.EMAIL_MAPLE,
                           [order.email])
     return mail_sent
 
