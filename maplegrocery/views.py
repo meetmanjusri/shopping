@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, get_object_or_404
 from cart.forms import CartAddProductForm
-# from .tasks import order_created
+from django.core.mail import send_mail
 from cart.cart import Cart
 from .models import *
 from .forms import *
@@ -165,6 +165,21 @@ def order_list(request):
                   {'orders': order})
 
 
+def order_created(order_id):
+    order = Order.objects.get(id=order_id)
+    print(order.email)
+    subject = f'Order nr. {order.id}'
+    message = f'Dear {order.first_name},\n\n' \
+              f'You have successfully placed an order.' \
+              f'Your order ID is {order.id}.'
+    print(message)
+    mail_sent = send_mail(subject,
+                          message,
+                          'maplegrocery21@gmail.com',
+                          [order.email])
+    return mail_sent
+
+
 @login_required
 def order_create(request):
     cart = Cart(request)
@@ -177,8 +192,7 @@ def order_create(request):
                                          quantity=item['quantity'])
             # clear the cart
             cart.clear()
-            # launch asynchronous task
-            # order_created.delay(order.id)
+            order_created(order.id)
             # set the order in the session
             request.session['order_id'] = order.id
             # redirect for payment
