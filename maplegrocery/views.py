@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, get_object_or_404
 from cart.forms import CartAddProductForm
-from .tasks import order_created
+# from .tasks import order_created
 from cart.cart import Cart
 from .models import *
 from .forms import *
@@ -178,7 +178,7 @@ def order_create(request):
             # clear the cart
             cart.clear()
             # launch asynchronous task
-            order_created.delay(order.id)
+            # order_created.delay(order.id)
             # set the order in the session
             request.session['order_id'] = order.id
             # redirect for payment
