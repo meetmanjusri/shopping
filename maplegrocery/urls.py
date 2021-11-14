@@ -26,6 +26,9 @@ urlpatterns = [
         path('order/<int:pk>/edit/', views.order_edit, name='order_edit'),
         path('order/<int:pk>/delete/', views.order_delete, name='order_delete'),
         path('order/<int:order_id>/pdf/', views.admin_order_pdf, name='admin_order_pdf'),
+        path('cart/detail', views.cart_detail, name='cart_detail'),
+        path('cart/add/<int:product_id>/', views.cart_add, name='cart_add'),
+        path('cart/remove/<int:product_id>/', views.cart_remove, name='cart_remove'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -29,5 +29,16 @@ class OrderForm(forms.ModelForm):
 class OrderItemForm(forms.ModelForm):
     class Meta:
         model = OrderItem
-        fields = ('order','product','price','quantity','created_date')
+        fields = ('order', 'product', 'price', 'quantity', 'created_date')
 
+
+PRODUCT_QUANTITY_CHOICES = [(i, str(i)) for i in range(1, 21)]
+
+
+class CartAddProductForm(forms.Form):
+    quantity = forms.TypedChoiceField(
+        choices=PRODUCT_QUANTITY_CHOICES,
+        coerce=int)
+    override = forms.BooleanField(required=False,
+                                  initial=False,
+                                  widget=forms.HiddenInput)

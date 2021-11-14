@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, get_object_or_404
-from cart.forms import CartAddProductForm
 from django.core.mail import send_mail
-from cart.cart import Cart
+
+from .cart import Cart
 from .models import *
 from .forms import *
 from django.conf import settings
@@ -12,6 +12,7 @@ from django.template.loader import render_to_string
 import weasyprint
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.views.decorators.http import require_POST
 
 now = timezone.now()
 
@@ -235,3 +236,33 @@ def admin_order_pdf(request, order_id):
     weasyprint.HTML(string=html).write_pdf(response,
                                            stylesheets=[weasyprint.CSS(settings.STATIC_FILES + '/css/pdf.css')])
     return response
+
+
+@require_POST
+def cart_add(request, product_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=product_id)
+    form = CartAddProductForm(request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+    cart.add(product=product,
+         quantity=cd['quantity'],
+         override_quantity=cd['override'])
+    return redirect('maplegrocery:cart_detail')
+
+
+@require_POST
+def cart_remove(request, product_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=product_id)
+    cart.remove(product)
+    return redirect('maplegrocery:cart_detail')
+
+
+def cart_detail(request):
+    cart = Cart(request)
+    for item in cart:
+        item['update_quantity_form'] = CartAddProductForm(initial={
+            'quantity': item['quantity'],
+            'override': True})
+    return render(request, 'cart/detail.html', {'cart': cart})
