@@ -75,6 +75,8 @@ class Order(models.Model):
     postal_code = models.CharField(max_length=20)
     city = models.CharField(max_length=100)
     braintree_id = models.CharField(max_length=150, blank=True)
+    preferred_date = models.DateField('Date')
+    preferred_time = models.TimeField('Time')
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(auto_now_add=True)
     paid = models.BooleanField(default=False)
