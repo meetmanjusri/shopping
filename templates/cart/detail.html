@@ -6,56 +6,60 @@
 {% block content %}
     <link href="{% static "css/cart.css" %}" rel="stylesheet"/>
     <h1>Your shopping cart</h1>
-    <table class="cart">
-        <thead>
-        <tr>
-            <th>Image</th>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Remove</th>
-            <th>Unit price</th>
-            <th>Price</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in cart %}
-            {% with product=item.product %}
+    <section class="py-3">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
                 <tr>
-                    <td>
-                        <a href="{{ product.get_absolute_url }}">
-                            <img src="{% if product.image %}{{ product.image.url}}{% else %}{% static "images/no_preview.jpg" %}{% endif %}">
-                        </a>
-                    </td>
-                    <td>{{ product.name }}</td>
-                    <td>
-                        <form action="{% url "maplegrocery:cart_add" product.id %}" method="post">
-                            {{ item.update_quantity_form.quantity }}
-                            {{ item.update_quantity_form.override }}
-                            <input type="submit" value="Update">
-                            {% csrf_token %}
-                        </form>
-                    </td>
-                    <td>
-                        <form action="{% url "maplegrocery:cart_remove" product.id %}"
-                              method="post">
-                            <input type="submit" value="Remove">
-                            {% csrf_token %}
-                        </form>
-                    </td>
-                    <td class="num">${{ item.price }}</td>
-                    <td class="num">${{ item.total_price }}</td>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Remove</th>
+                    <th>Unit price</th>
+                    <th>Price</th>
                 </tr>
-            {% endwith %}
-        {% endfor %}
-        <tr class="total">
-            <td>Total</td>
-            <td colspan="4"></td>
-            <td class="num">${{ cart.get_total_price }}</td>
-        </tr>
-        </tbody>
-    </table>
-    <p class="text-right">
-        <a href="{% url "maplegrocery:product_list" %}" class="buttonlight">Continue shopping</a>
-        <a href="{% url "maplegrocery:order_create" %}" class="button">Checkout</a>
-    </p>
+                </thead>
+                <tbody>
+                {% for item in cart %}
+                    {% with product=item.product %}
+                        <tr>
+                            <td>
+                                <a href="{{ product.get_absolute_url }}">
+                                    <img src="{% if product.image %}{{ product.image.url}}{% else %}{% static "images/no_preview.jpg" %}{% endif %}" alt="product-image", width=150px; height=150px;">
+                                </a>
+                            </td>
+                            <td>{{ product.name }}</td>
+                            <td>
+                                <form action="{% url "maplegrocery:cart_add" product.id %}" method="post">
+                                    {{ item.update_quantity_form.quantity }}
+                                    {{ item.update_quantity_form.override }}
+                                    <input type="submit" value="Update">
+                                    {% csrf_token %}
+                                </form>
+                            </td>
+                            <td>
+                                <form action="{% url "maplegrocery:cart_remove" product.id %}"
+                                      method="post">
+                                    <input type="submit" value="Remove">
+                                    {% csrf_token %}
+                                </form>
+                            </td>
+                            <td class="num">${{ item.price }}</td>
+                            <td class="num">${{ item.total_price }}</td>
+                        </tr>
+                    {% endwith %}
+                {% endfor %}
+                <tr class="total">
+                    <td>Total</td>
+                    <td colspan="4"></td>
+                    <td class="num">${{ cart.get_total_price }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="text-right">
+                <a href="{% url "maplegrocery:product_list" %}" class="buttonlight">Continue shopping</a>
+                <a href="{% url "maplegrocery:order_create" %}" class="button">Checkout</a>
+            </p>
+        </div>
+    </section>
 {% endblock %}
