@@ -1,38 +1,22 @@
 <!DOCTYPE html>
 {% extends 'maplegrocery/base.html' %}
+{% load static %}
 {% block content %}
-    <table class="table table-striped table-bordered table-hover">
-        <div class="row">
-            <h1 style="padding-left: -40px; font-weight: bold; margin-top:10px">Unit Details</h1>
-            <a href="{% url 'maplegrocery:unit_new' %}" class="btn btn-primary btn-lg active ml-2" role="button">Add Unit</a>
+    <link href="{% static "css/alignment.css" %}" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <h1>Unit Details</h1>
+    <p><a href="{% url 'maplegrocery:unit_new' %}" class="btn btn-primary btn-lg active ml-2" role="button">Add Unit</a></p>
+    {% for unit in units %}
+        <div class="align">
+            <h3>{{ unit.name }}</h3>
+            <h4>Description: {{ unit.description}}</h4>
+            <h5>Created Date: {{ unit.created_date }}</h5>
+            <h5>Updated Date: {{ unit.updated_date }}</h5>
+            <p><a href="{% url 'maplegrocery:unit_edit' pk=unit.pk %}"
+                  class="btn btn-warning">Edit</a>
+            <a href="{% url 'maplegrocery:unit_delete' pk=unit.pk %}"
+                  onclick="return confirm('Are you sure you want to delete?')"
+                  class="btn btn-danger">Delete</a></p>
         </div>
-        <div>
-            <table class="table table-striped table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Created Date</th>
-                    <th>Updated Date</th>
-                    <th colspan="3">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for unit in units %}
-                        <tr>
-                            <td>{{ unit.name }}</td>
-                            <td>{{ unit.description}}</td>
-                            <td>{{ unit.created_date }}</td>
-                            <td>{{ unit.updated_date }}</td>
-                            <td><a href="{% url 'maplegrocery:unit_edit' pk=unit.pk %}"
-                                   class="btn btn-warning">Edit</a></td>
-                            <td><a href="{% url 'maplegrocery:unit_delete' pk=unit.pk %}"
-                                   onclick="return confirm('Are you sure you want to delete?')"
-                                   class="btn btn-danger">Delete</a>
-                            </td>
-                        </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    {% endfor %}
 {% endblock %}
