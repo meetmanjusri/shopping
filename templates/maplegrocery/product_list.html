@@ -1,100 +1,42 @@
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{#{% extends 'maplegrocery/base.html' %}#}
-{#{% load static %}#}
-{#{% block content %}#}
-{#    <div class="row">#}
-{#        <h1 style="padding-left: -40px; font-weight: bold; margin-top:10px">Product List</h1>#}
-{#    </div>#}
-{#    {% for product in products %}#}
-{#        <div>#}
-{#            <h4>{{ product.Name }}</h4>#}
-{#            <h4>{{ product.image }}</h4>#}
-{#            <h4>{{ product.price }}</h4>#}
-{#        </div>#}
-{#    {% endfor %}#}
-{#    </html>#}
-{#{% endblock %}#}
-{##}
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{#{% extends 'maplegrocery/base.html' %}#}
-{#{% load static %}#}
-{#{% block content %}#}
-{#    <link rel="stylesheet" type="text/css" href='{% static "/css/format.css" %}'>#}
-{#    <body style="min-width: 411px">#}
-{#    <div class="row">#}
-{#        <h1 style="padding-left: -40px; font-weight: bold; margin-top:10px">Product Details</h1>#}
-{#        {% if user.is_authenticated %}#}
-{#            <a href="{% url 'maplegrocery:product_new' %}" class="btn btn-primary btn-lg active ml-2" style="background-color: lightseagreen; margin-top: 10px; margin-bottom: 20px; position: relative">Add Product</a>#}
-{#        {%endif%}#}
-{#    </div>#}
-{#    <div>#}
-{#        {% for product in products %}#}
-{#            <div class="detail">#}
-{#                <div class="image-detail"><img src="{% if product.image %}{{ product.image.url }}{%else %}{% static "images/no_preview.jpg" %}{% endif %}" height=300 width=300/></div>#}
-{#                <div class="detail-list">#}
-{#                    <h4>{{ product.name}}</h4>#}
-{#                    <h4>{{ product.price}}</h4>#}
-{#                    {% if request.user.is_superuser or user.get_username == employee.user|stringformat:"s" %}#}
-{#                        <div class ="buttons">#}
-{#                            <div class="arrange-button">#}
-{#                                <a href="{% url 'maplegrocery:product_edit' pk=product.pk %}" class="btn btn-primary btn-lg">Edit</a>#}
-{#                                <a href="{% url 'maplegrocery:product_delete' pk=product.pk %}"#}
-{#                                   onclick="return confirm('Are you sure you want to delete?')"#}
-{#                                   class="btn btn-danger btn-lg">Delete</a>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    <br style="margin: 1px; position: relative">#}
-{#                    {% endif %}#}
-{#                    <a href="{% url 'portfolio:reservation_list' pk=park.pk %}" class="btn btn-primary" style="width: 10em"></a>#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endfor %}#}
-{#    </div>#}
-{#    </div>#}
-{#    </div>#}
-{#    </body>#}
-{#    </html>#}
-{#{% endblock %}#}
-
 {% extends "maplegrocery/base.html" %}
 {% load static %}
 {% block title %}
-    {% if category %}{{ category.name }}{% else %}Products{% endif %}
+    Products
 {% endblock %}
 {% block content %}
-    <div id="sidebar">
-        <h3>Categories</h3>
-        <ul>
-            <li {% if not category %}class="selected"{% endif %}>
-                <a href="{% url "maplegrocery:product_list" %}">All</a>
-            </li>
-            {% for category in categorys %}
-                <li {% if category.name == category.name %}class="selected"
-                    {% endif %}>
-                    <a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div id="main" class="product-list">
-        <h1>{% if category %}{{ category.name }}{% else %}Products
-        {% endif %}</h1>
+    <style>
+        img {
+            height: 280px;
+            object-fit: cover;
+        }
+    </style>
+    <h1>Products</h1>
+{#    Reference - https://startbootstrap.com/template/shop-homepage#}
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-sm-1 row-cols-lg-4 row-cols-xl-4 justify-content-center">
         {% for product in products %}
-            <div class="item">
-                <a href="{{ product.get_absolute_url }}">
-                    <img src="{% if product.image %}{{ product.image.url }}{%else %}{% static "images/no_preview.jpg" %}{% endif %}">
-                </a>
-                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
-                <br>
-                ${{ product.price }}
-                <form action="{% url "maplegrocery:cart_add" product.id %}" method="post">
-                    {{ cart_product_form }}
-                    {% csrf_token %}
-                    <input type="submit" value="Add to cart">
-                </form>
-{#{{ product.description|linebreaks }}#}
+            <div class="col mb-5">
+                <div class="card h-100">
+                    <!-- Product image-->
+                    <img class="card-img-top" src="
+                            {% if product.image %}{{ product.image.url }}{% else %}{% static "images/no_preview.jpg" %}{% endif %}">
+                    <!-- Product details-->
+                    <div class="card-body p-3">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder">{{ product.name }}</h5>
+                            <!-- Product price-->
+                            ${{ product.price }}
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent text-center">
+                        <form action="{% url "maplegrocery:cart_add" product.id %}" method="post">
+                            {% csrf_token %}
+                            {{ cart_product_form.as_p }}
+                            <button class="btn btn-success" value="Add to cart">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         {% endfor %}
     </div>
