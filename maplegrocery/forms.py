@@ -6,7 +6,7 @@ from django.forms.widgets import DateInput
 class UnitForm(forms.ModelForm):
     class Meta:
         model = Unit
-        fields = ('name', 'description', 'created_date')
+        fields = ('name', 'description')
 
 
 class CategoryForm(forms.ModelForm):

@@ -1,8 +1,14 @@
 {% extends 'maplegrocery/base.html' %}
 {% load static %}
 {% block content %}
+    <style>
+        img {
+            width: 300px;
+            object-fit: cover;
+        }
+    </style>
     <h1 style="padding-left: -40px; font-weight: bold; margin-top:10px">Product Details</h1>
-    <a href="{% url 'maplegrocery:product_new' %}" class="btn btn-primary btn-lg active ml-2"
+    <a href="{% url 'maplegrocery:product_new' %}" class="btn btn-outline-dark"
        role="button">Add Product</a>
     <section class="py-3">
         <div class="table-responsive">
@@ -27,7 +33,9 @@
                         <td>{{ product.name }}</td>
                         <th>{{ product.description }}</th>
                         <td><a href="{{ product.get_absolute_url }}">
-                            <img src="{% if product.image %}{{ product.image.url}}{% else %}{% static "images/no_preview.jpg" %}{% endif %}" alt="product-image", width=150px; height=150px;">
+                            <img src="
+                                    {% if product.image %}{{ product.image.url }}{% else %}{% static "images/no_preview.jpg" %}{% endif %}"
+                                 alt="product-image" , width=150px; height=150px;">
                         </a></td>
                         <td>${{ product.price }}</td>
                         <td>{{ product.available }}</td>
