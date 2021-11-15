@@ -64,7 +64,9 @@
             </table>
             <p class="text-right">
                 <a href="{% url "maplegrocery:product_list" %}" class="btn btn-outline-dark">Continue shopping</a>
-                <a href="{% url "maplegrocery:order_create" %}" class="btn btn-outline-dark">Checkout</a>
+                {% if cart.get_total_price > 0 %}
+                    <a href="{% url "maplegrocery:order_create" %}" class="btn btn-outline-dark">Checkout</a>
+                {% endif %}
             </p>
         </div>
     </section>
