@@ -76,6 +76,12 @@ def product_list(request, category_name=None):
                    'products': products,
                    'cart_product_form': cart_product_form})
 
+@login_required
+def product_detail(request):
+    product = Product.objects.filter(created_date__lte=timezone.now())
+    return render(request, 'maplegrocery/product_detail.html',
+                  {'products': product})
+
 
 @login_required
 def product_new(request):
@@ -102,7 +108,7 @@ def product_edit(request, pk):
             product = form.save(commit=False)
             product.updated_date = timezone.now()
             product.save()
-            return redirect('maplegrocery:product_list')
+            return redirect('maplegrocery:product_detail')
     else:
         # edit
         form = ProductForm(instance=product)
@@ -113,7 +119,7 @@ def product_edit(request, pk):
 def product_delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
     product.delete()
-    return redirect('maplegrocery:product_list')
+    return redirect('maplegrocery:product_detail')
 
 
 def category_list(request):

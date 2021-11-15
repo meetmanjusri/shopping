@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% block body_block %}
-    <h1>Delete {{ unit.id }}?</h1>
+    <h1>Delete {{ product.id }}?</h1>
     <form method="post">
         {% csrf_token %}
         <input type="submit" class="btn btn-danger" value="Delete">
