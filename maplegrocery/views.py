@@ -62,19 +62,21 @@ def unit_delete(request, pk):
     return redirect('maplegrocery:unit_list')
 
 
-def product_list(request, category_name=None):
-    category = None
-    categorys = Category.objects.all()
-    products = Product.objects.filter(created_date__lte=timezone.now())
+def product_list(request):
+    products = []
+    if request.method == "GET":
+        query = request.GET.get('search')
+        print(query)
+        if query == '' or query is None:
+            query = 'None'
+            products = Product.objects.filter(created_date__lte=timezone.now())
+        else:
+            products = Product.objects.filter(name__icontains=query)
     cart_product_form = CartAddProductForm()
-    if category_name:
-        category = get_object_or_404(Category, name=category_name)
-        products = products.filter(category=category)
     return render(request, 'maplegrocery/product_list.html',
-                  {'category': category,
-                   'categorys': categorys,
-                   'products': products,
-                   'cart_product_form': cart_product_form})
+                  {'products': products,
+                   'cart_product_form': cart_product_form,
+                   'query': query})
 
 @login_required
 def product_detail(request):

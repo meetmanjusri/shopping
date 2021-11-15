@@ -10,8 +10,19 @@
             object-fit: cover;
         }
     </style>
-    <h1>Products</h1>
-{#    Reference - https://startbootstrap.com/template/shop-homepage#}
+    <div class="row">
+        <div class="col-md-4">
+            <h1>Products</h1>
+        </div>
+        <div class="col-md-8 d-flex flex-row-reverse">
+{#            Reference - https://linuxhint.com/build-a-basic-search-for-a-django/#}
+            <form action="{% url 'maplegrocery:product_list' %}" class="form-inline" method="get">
+                <input name="search" type="" class="col-md-" id="" placeholder="Search Products">
+                <button type="submit" class="btn btn-outline-dark">Search</button>
+            </form>
+        </div>
+    </div>
+    {#    Reference - https://startbootstrap.com/template/shop-homepage#}
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-sm-1 row-cols-lg-4 row-cols-xl-4 justify-content-center">
         {% for product in products %}
             <div class="col mb-5">
@@ -33,7 +44,7 @@
                         <form action="{% url "maplegrocery:cart_add" product.id %}" method="post">
                             {% csrf_token %}
                             {{ cart_product_form.as_p }}
-                            <button class="btn btn-success" value="Add to cart">Add to Cart</button>
+                            <button class="btn btn-outline-dark" value="Add to cart">Add to Cart</button>
                         </form>
                     </div>
                 </div>
